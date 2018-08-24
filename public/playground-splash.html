@@ -1,0 +1,202 @@
+
+<link rel="import" href="bower_components/polymerfire/polymerfire.html">
+<link rel="stylesheet" href="bower_components/blockriain/dist/blockrain.css">
+
+<!-- jQuery and Blockrain.js -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/blockrain/dist/blockrain.jquery.js"></script>
+
+<dom-module id="playground-splash">
+
+  <template>
+
+    <style>
+
+    :host {
+      z-index: -1;
+      position: absolute;
+      padding:0px;
+      left:0px;
+      top: 0px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .copy-container {
+      height: 100%;
+      width: 100%;
+      display: table;
+      position: absolute;
+    }
+
+    .copy {
+      text-align: center;
+      display: table-cell;
+      vertical-align: middle;
+      position: relative;
+    }
+
+    .supertitle {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0.67em 0;
+      color: #333
+    }
+
+    .title {
+      font-size: 6rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin: 0.67em 0;
+      color: #333
+    }
+
+    .subtitle-container {
+      padding: 30px;
+    }
+
+    .subtitle {
+      color: #333;
+      font-weight: 500;
+      font-size: 1.4rem;
+      line-height: 1.1;
+
+    }
+
+    .cta-button {
+      background-color: transparent; /* Green */
+      border: none;
+      color: #darkgrey;
+      padding: 10px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border: 2px solid grey;
+      text-transform: none;
+    }
+
+    .cta-button[disabled] {
+      border: 2px solid lightgrey;
+    }
+
+    .blockrain-background-content {
+      z-index: -1;
+      position: absolute;
+      padding:0px;
+      left:0px;
+      top: 0px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .blockrain-game-over-holder {
+      visibility: hidden;
+    }
+
+    @media (max-width: 640px) {
+      .supertitle {
+        font-size: 1rem;
+      }
+      .title {
+        font-size: 2.8rem;
+      }
+      .subtitle {
+        font-size: 1rem;
+      }
+      .cta-button {
+        padding: 5px 16px;
+        margin: 10px;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    </style>
+
+    <div class="copy-container">
+
+      <div class="copy">
+
+        <h2 class="supertitle">Welcome to the Project Clarify</h2>
+
+        <h1 class="title">Playground!</h1>
+
+        <div class="subtitle-container">
+          <p class="subtitle">We're researching how AI-driven neurofeedback games can be used to improve human cognition.
+          </p>
+        </div>
+
+      <a href="/assets/docs/project_clarify_whitepaper.pdf" target="_blank">
+        <paper-button class="cta-button">Read the Whitepaper</paper-button>
+      </a>
+      <a on-tap="navigatePingPong">
+        <paper-button class="cta-button">Play Ping Pong</paper-button>
+      </a>
+
+      </div>
+
+    </div>
+
+    <div class="blockrain-background-content"></div>
+
+  </template>
+
+  <script>
+
+    window.BlockrainThemes = {
+        'my': {
+            background: '#ececec',
+            backgroundGrid: null,
+            primary: null,
+            secondary: null,
+            stroke: null,
+            innerStroke: null,
+            blocks: {
+                line:     '#8dff8b',
+                square:   '#ff6767',
+                arrow:    '#61dfff',
+                rightHook:'#ff6767',
+                leftHook: '#c8c8c8',
+                rightZag: '#ffe858',
+                leftZag:  '#ffffff'
+            }
+        }
+    };
+
+  </script>
+
+  <script>
+
+    Polymer({
+
+      is: 'playground-splash',
+
+      ready: function() {
+        var game = Polymer.dom(this.root).querySelector('.blockrain-background-content');
+        $(game).blockrain({
+          theme: "my",
+          blockWidth: 15,
+          speed: 30,
+          autoplay: true,
+          autoplayRestart: true
+        })
+
+        Polymer.dom(this.root).querySelector('.blockrain-start').hidden = true;
+        Polymer.dom(this.root).querySelector('.blockrain-score').hidden = true;
+
+    },
+
+    navigatePingPong: function() {
+      this.fire('navigate-pingpong', {'page': 'pingpong'})
+    }
+
+    });
+
+  </script>
+
+</dom-module>

@@ -1,0 +1,579 @@
+
+<!--
+<script src="bower_components/p5.js/lib/p5.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js"></script>
+-->
+
+<!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
+
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+<link rel="import" href="bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<dom-module id="playground-pingpong">
+
+  <template>
+
+    <style>
+
+    :host {
+      z-index: -2;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+
+    .paused-container {
+      z-index: -1;
+      height: 100%;
+      width: 100%;
+      display: table;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+
+    .paused-content {
+
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        position: relative;
+
+    }
+
+    .paused-buttons {
+
+    }
+
+    .paused-buttons paper-button {
+
+      background-color: transparent; /* Green */
+      border: none;
+      color: #darkgrey;
+      padding: 10px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border: 2px solid grey;
+      text-transform: none;
+
+    }
+
+    .game-canvas {
+      z-index: -1;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      visibility: hidden;
+    }
+
+    .score {
+      visibility: hidden;
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      text-align: left;
+      width: 100px;
+      padding: 40px;
+    }
+
+    .game-controls {
+      visibility: hidden;
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      text-align: right;
+      width: 100px;
+      padding: 40px;
+    }
+
+    .game-controls paper-button {
+
+      background-color: transparent; /* Green */
+      border: none;
+      color: #darkgrey;
+      padding: 10px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border: 2px solid grey;
+      text-transform: none;
+
+    }
+
+    h2.title {
+      font-size: 28px;
+    }
+
+    .subtitle {
+      font-weight: 500;
+      padding: 0px 10px 0px 10px;
+      font-size: 22px
+    }
+
+    .instructions {
+      font-weight: 500;
+      font-size: 16px;
+      padding: 0px 30px 10px 30px;
+    }
+
+    @media (max-width: 640px) {
+      h2.title {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .instructions {
+        font-size: 12px;
+      }
+
+      .paused-buttons paper-button {
+        padding: 5px 16px;
+      }
+
+      .game-controls paper-button {
+        padding: 5px 16px;
+      }
+
+    }
+
+    </style>
+
+    <svg class="game-canvas">
+
+      <!-- The game goes here, i.e. p5.js pong game in polymer form. -->
+
+        <circle id="ball"
+                cx$="[[ballXPosition]]"
+                cy$="[[ballYPosition]]"
+                r$="[[ballRadius]]"
+                stroke="black"
+                stroke-width="1"
+                fill="grey" />
+
+        <!--
+        <circle id="ball"
+                cx$="[[ballXPosition]]"
+                cy$="[[ballYPosition]]"
+                r$="[[ballRadius]]"
+                stroke="blue"
+                stroke-width="1"
+                fill="grey" />
+
+        <circle id="ball"
+                cx$="[[ballXPosition]]"
+                cy$="[[ballYPosition]]"
+                r$="[[ballRadius]]"
+                stroke="blue"
+                stroke-width="1"
+                fill="red" />-->
+
+        <rect id="paddle"
+              x$="[[paddleXPosition]]"
+              y$="[[paddleYPosition]]"
+              width$="[[paddleWidth]]"
+              height$="[[paddleHeight]]"
+              style="fill:rgb(100,100,100);stroke-width:1;stroke:rgb(0,0,0)"
+              />
+
+    </svg>
+
+    <!-- Current score, user state, and game state -->
+    <firebase-document
+      id="document"
+      app-name="playground"
+      path="/users/[[uid]]/current"
+      data="{{syncCurrentData}}">
+    </firebase-document>
+
+    <!-- Store of historical data -->
+    <!--
+    <firebase-document
+      id="document"
+      app-name="playground"
+      path="/users/[[uid]]/currentScore"
+      data="[[syncScore]]">
+    </firebase-document>-->
+
+    <div class="score">Score: [[score]]</div>
+
+    <div class="game-controls">
+
+      <!-- The runtime controls go here, e.g. pause button in lower left.-->
+      <paper-button on-tap="pause">Pause</paper-button>
+
+    </div>
+
+    <div class="paused-container">
+
+      <div class="paused-content">
+
+        <p>Let's play</p>
+
+        <h2 class="title">Ping Pong!</h2>
+
+        <h4 class="subtitle">A classic game of don't let it hit the bottom.</h4>
+
+        <p class="instructions">
+          Move your mouse or drag your finger to control the paddle.
+        </p>
+
+        <p class="instructions">
+          When your mind wanders note that and return to the game.
+        </p>
+
+        <div class="paused-buttons">
+
+          <paper-button on-tap="play" hidden$="[[!signedIn]]">Play</paper-button>
+
+          <p hidden$="[[signedIn]]">Please sign in to continue.</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </template>
+
+  <script>
+
+    //https://github.com/sepans/p5-element/blob/master/p5-element.html
+
+      Polymer({
+
+        is: 'playground-pingpong',
+
+        properties: {
+          signedIn: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
+          ballXPosition: {
+            type: Number,
+            notify: true,
+            value: 50,
+          },
+          ballYPosition: {
+            type: Number,
+            notify: true,
+            value: 50,
+          },
+          ballPreviousXPosition: {
+            type: Number,
+            value: 49,
+          },
+          ballPreviousYPosition: {
+            type: Number,
+            value: 49,
+          },
+          ballRadius: {
+            type: Number,
+            value: 25,
+          },
+          paddleXPosition: {
+            type: Number,
+            value: 100,
+          },
+          paddleYPosition: {
+            type: Number,
+            value: 100,
+          },
+          paddleWidth: {
+            type: Number,
+            value: 75,
+          },
+          paddleHeight: {
+            type: Number,
+            value: 20,
+          },
+          started: {
+            type: Boolean,
+            value: false
+          },
+          score: {
+            type: Number,
+            value: 0,
+          },
+          dx: {
+            type: Number,
+            value: 4,
+          },
+          dy: {
+            type: Number,
+            value: 4,
+          },
+          paused: {
+            type: Boolean,
+            value: true,
+          },
+          bottomContactPenalty: {
+            type: Number,
+            value: 100
+          },
+          paddleContactReward: {
+            type: Number,
+            value: 100
+          },
+          timestamp: {
+            type: Number,
+            value: 0
+          },
+          uid: {
+            type: Number,
+            notify: true
+          },
+          syncScore: {
+            type: Object
+          },
+          syncCurrentData: {
+            type: Object
+          },
+          mouseX: {
+            type: Number,
+            value: 0
+          },
+          mouseY: {
+            type: Number,
+            value: 0
+          }
+        },
+
+        pause: function() {
+          Polymer.dom(this.root).querySelector('.paused-content').style.visibility = "visible";
+          Polymer.dom(this.root).querySelector('.game-controls').style.visibility = "hidden";
+          Polymer.dom(this.root).querySelector('.score').style.visibility = "hidden";
+          Polymer.dom(this.root).querySelector('.game-canvas').style.visibility = "hidden";
+          this.paused = true;
+        },
+
+        play: function() {
+          Polymer.dom(this.root).querySelector('.paused-content').style.visibility = "hidden";
+          Polymer.dom(this.root).querySelector('.game-controls').style.visibility = "visible";
+          Polymer.dom(this.root).querySelector('.score').style.visibility = "visible";
+          Polymer.dom(this.root).querySelector('.game-canvas').style.visibility = "visible";
+          this.paused = false;
+        },
+
+        // Detect when the ball is in contact with the paddle and thus should
+        // bounce in the y direction.
+        ballShouldBounceOffPaddle: function() {
+
+          var ballLowestPointY = this.ballYPosition + this.ballRadius;
+
+          var paddleStartX = this.paddleXPosition;
+          var paddleEndX = this.paddleXPosition + this.paddleWidth;
+
+          if ( (this.ballXPosition >= (paddleStartX - this.ballRadius/2) ) &&
+               (this.ballXPosition <= (paddleEndX + this.ballRadius/2) )) {
+
+            // We are within the X range of the paddle
+
+            if ( (ballLowestPointY >= this.paddleYPosition) &&
+                 (ballLowestPointY <= this.paddleYPosition + this.paddleHeight)) {
+
+                // The lowest point of the ball is within the region of the paddle
+
+                if ( this.ballYPosition - this.ballPreviousYPosition > 0) {
+
+                  // The ball is not on its way up
+
+                  return true
+
+                }
+            }
+
+          } else {
+            return false
+          };
+
+        },
+
+        sound: function(src) {
+            this.sound = document.createElement("audio");
+            this.sound.src = src;
+            this.sound.setAttribute("preload", "auto");
+            this.sound.setAttribute("controls", "none");
+            this.sound.style.display = "none";
+            document.body.appendChild(this.sound);
+            this.play = function(){
+                this.sound.play();
+            }
+            this.stop = function(){
+                this.sound.pause();
+            }
+        },
+
+        step: function() {
+
+          this.paddleYPosition = this.offsetHeight - 100;
+
+          if (!this.paused) {
+
+            // The current x and y positions of the ball
+            var cx = this.ballXPosition;
+            var cy = this.ballYPosition;
+
+            var changeX = (cx - this.ballPreviousXPosition);// * this.dx;
+            var changeY = (cy - this.ballPreviousYPosition); // * this.dy;
+
+            // If we've collided with the edge of the window
+
+            if ( cx <= this.ballRadius ) {
+               // Ball hit the left wall
+               changeX = -changeX;
+               this.leftWallSound.play();
+            };
+
+            if ( cx + this.ballRadius >= this.offsetWidth ) {
+              // Ball hit the right wall
+              changeX = -changeX;
+              this.rightWallSound.play();
+            };
+
+            if (this.ballShouldBounceOffPaddle()) {
+              // Ball hit the paddle
+              this.score += this.paddleContactReward;
+              changeY = -changeY;
+              this.paddleSound.play();
+            } else if (cy + this.ballRadius >= this.offsetHeight) {
+              // Ball hit the ground
+              changeY = -changeY;
+              this.score -= this.bottomContactPenalty;
+              this.floorSound.play();
+            };
+
+            if (cy <= this.ballRadius) {
+              // Ball hit the ceiling
+              changeY = -changeY;
+              this.ceilingSound.play();
+            }
+
+            // The new x and y positions of the ball
+            var cxNew = cx + changeX;
+            var cyNew = cy + changeY;
+
+            // Record the current position as the new previous position
+            this.ballPreviousXPosition = cx;
+            this.ballPreviousYPosition = cy;
+
+            this.ballXPosition = cxNew;
+            this.ballYPosition = cyNew;
+
+          };
+
+          this.ballRadius = this.syncCurrentData.gameStateData.ballRadius;
+
+        },
+
+        handleMouseMoved: function(e) {
+
+          this.paddleXPosition += 3*e.movementX;
+
+          var minPaddleX = 0;
+          if (this.paddleXPosition <= minPaddleX) {
+            this.paddleXPosition = minPaddleX
+          };
+
+          var maxPaddleX = (this.offsetWidth - this.paddleWidth);
+          if (this.paddleXPosition >= maxPaddleX) {
+            this.paddleXPosition = maxPaddleX
+          };
+
+          this.mouseX = e.clientX;
+          this.mouseY = e.clientY;
+
+        },
+
+        /**
+
+          - Current person state, current game state, current score.
+          - State and score history.
+
+        **/
+
+        syncData: function() {
+
+          date = new Date();
+          timestamp = date.getTime();
+
+          // As soon as the this.syncScore variable is changed, firebase-document
+          // will update the corresponding object in the firebase database but
+          // will not do so when this.score changes.
+          this.syncCurrentData = {
+            "timestamp": timestamp,
+            "scoreData": {
+              "score": this.score,
+            },
+            "userStateData": {
+              "mouseX": this.mouseX,
+              "mouseY": this.mouseY
+            },
+            "gameStateData": {
+              "ballXPosition": this.ballXPosition,
+              "ballYPosition": this.ballYPosition,
+              "paddleXPosition": this.paddleXPosition,
+              "paddleYPosition": this.paddleYPosition,
+              "ballRadius": this.ballRadius,
+              "paddleWidth": this.paddleWidth,
+              "paddleHeight": this.paddleHeight,
+              "screenWidth": this.offsetWidth,
+              "screenHeight": this.offsetHeight
+            }
+          };
+
+          console.log("Sent a score update.");
+
+        },
+
+        attached: function() {
+
+          // Setup sound elements
+          this.paddleSound = new this.sound("assets/audio/paddle-bounce.wav");
+          this.leftWallSound = new this.sound("assets/audio/wall-bounce-trimmed.m4a");
+          this.rightWallSound = new this.sound("assets/audio/wall-bounce.mp3");
+          this.ceilingSound = new this.sound("assets/audio/wall-bounce.mp3");
+          this.floorSound = new this.sound("assets/audio/floor-bounce.mp3");
+
+          var scorePath = "/users/" + this.uid + "/currentScore";
+          //this.$.firebase-document.save(scorePath);
+
+          this.ballXPosition = 50;
+          this.ballYPosition = 50;
+
+          this.ballPreviousXPosition = this.ballXPosition - this.dx;
+          this.ballPreviousYPosition = this.ballYPosition - this.dy;
+
+          // Populate the inital object so we can access ballRadius.
+          this.syncData();
+
+          setInterval(this.step.bind(this), 1000/600);
+
+          // Control the frequency with which data is synced to the database
+          // Clearly we don't want to do this every time we render a frame
+          // on the client.
+          setInterval(this.syncData.bind(this), 250);
+
+          this.addEventListener("mousemove", this.handleMouseMoved)
+
+        },
+
+        paddleMoved: function() {
+          console.log("moved");
+        }
+
+      });
+
+  </script>
+
+</dom-module>

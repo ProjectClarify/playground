@@ -1,0 +1,152 @@
+[debug] [2019-08-02T18:35:48.888Z] ----------------------------------------------------------------------
+[debug] [2019-08-02T18:35:48.893Z] Command:       /home/chris_w_beitel/.nvm/versions/node/v11.9.0/bin/node /home/chris_w_beitel/.nvm/versions/node/v11.9.0/bin/firebase deploy --only functions,hosting
+[debug] [2019-08-02T18:35:48.893Z] CLI Version:   7.0.1
+[debug] [2019-08-02T18:35:48.893Z] Platform:      linux
+[debug] [2019-08-02T18:35:48.893Z] Node Version:  v11.9.0
+[debug] [2019-08-02T18:35:48.895Z] Time:          Fri Aug 02 2019 11:35:48 GMT-0700 (Pacific Daylight Time)
+[debug] [2019-08-02T18:35:48.895Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-08-02T18:35:48.917Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-08-02T18:35:48.918Z] > authorizing via signed-in user
+[debug] [2019-08-02T18:35:48.918Z] [iam] checking project clarify for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2019-08-02T18:35:48.922Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/clarify:testIamPermissions  
+
+[debug] [2019-08-02T18:35:49.063Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:35:49.067Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/clarify  
+ 
+[debug] [2019-08-02T18:35:49.171Z] <<< HTTP RESPONSE 200
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions.
+ Please upgrade using npm install --save firebase-functions@latest in your functions directory.
+[info] 
+[info] === Deploying to 'clarify'...
+[info] 
+[info] i  deploying functions, hosting
+[debug] [2019-08-02T18:35:51.932Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "firebase-functions": "^2.1.0",
+    "firebase-admin": "~5.12.1",
+    "prpl-server": "^1.3.0",
+    "rendertron-middleware": "^0.1.3"
+  },
+  "private": true,
+  "engines": {
+    "node": "8"
+  }
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-08-02T18:35:51.933Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/clarify?view=CONSUMER_VIEW  
+ 
+[debug] [2019-08-02T18:35:51.934Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/clarify?view=CONSUMER_VIEW  
+ 
+[debug] [2019-08-02T18:35:53.278Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2019-08-02T18:35:53.389Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:35:53.390Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/clarify  
+ 
+[debug] [2019-08-02T18:35:53.763Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:35:53.764Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/340173104977:getServerAppConfig  
+ 
+[debug] [2019-08-02T18:35:53.845Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:35:53.847Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/clarify-32fcf/versions  
+
+[debug] [2019-08-02T18:35:54.675Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2019-08-02T18:35:54.678Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/clarify/configs  
+ 
+[debug] [2019-08-02T18:35:54.790Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (68.72 KB) for uploading
+[debug] [2019-08-02T18:35:56.472Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/clarify/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2019-08-02T18:35:56.848Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:35:56.849Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-0b34140c-ecd9-4eb0-98bb-b7bfb9fc4eeb/2fc710c0-deb7-42df-b3eb-103963d361c7.zip?GoogleAccessId=service-340173104977@gcf-admin-robot.iam.gserviceaccount.com&Expires=1564772756&Signature=htopGgOQ%2Fxvns75xHKZpKbLgSgSfBm5l2UEGoAomIN0rX0ii0lSJx%2BE02vVslnFH%2FZP2V3vHgm4wo8zgYVsip3Cli21VHCNn7pVZDfjauRIjTftKJ%2BQWcqBfIvWzDpMJ7%2B%2BOZqC1jTuq4sdbTPYtTVkIPmTAn27P0mHwn%2FP%2FUMAT4fnONBKFo0PwLLckMkWQUFUsrhXYEj0Ji6eyZG98EHoF%2FQEPvSYvmNcD7M%2Bw8MAO9ZcsA%2B89iyEuld50oNeC8A0CHT7HmzwS9Z1QwH0bJUrm4EBO1G%2Fv%2B6WfMtCrBgm%2Bjy9aS%2FBJ3HmlnE%2FobuY4VFRoyokIK2gT5wtbQ7OA%2BA%3D%3D  
+
+[debug] [2019-08-02T18:35:57.185Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[info] i  hosting[clarify-32fcf]: beginning deploy...
+[info] i  hosting[clarify-32fcf]: found 126 files in build
+[debug] [2019-08-02T18:35:57.230Z] [hosting] hash cache [YnVpbGQ] not populated
+[debug] [2019-08-02T18:36:00.404Z] [hosting] hash cache [YnVpbGQ] stored for 126 files
+[debug] [2019-08-02T18:36:00.404Z] [hosting][hash queue][FINAL]
+[debug] [2019-08-02T18:36:00.404Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/clarify-32fcf/versions/a81127636d48a6d2:populateFiles  
+ <request body omitted>
+[debug] [2019-08-02T18:36:04.511Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:04.587Z] [hosting][populate queue][FINAL]
+[debug] [2019-08-02T18:36:04.587Z] [hosting] uploads queued: 68
+[debug] [2019-08-02T18:36:07.275Z] [hosting][upload queue][FINAL]
+[info] ✔  hosting[clarify-32fcf]: file upload complete
+[debug] [2019-08-02T18:36:07.276Z] [hosting] deploy completed after 10090ms
+[debug] [2019-08-02T18:36:07.280Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/clarify/locations/-/functions  
+ 
+[debug] [2019-08-02T18:36:07.751Z] <<< HTTP RESPONSE 200
+[info] i  functions: creating Node.js 8 function app(us-central1)...
+[debug] [2019-08-02T18:36:07.753Z] Trigger is:  {"httpsTrigger":{}}
+[debug] [2019-08-02T18:36:07.754Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudscheduler.googleapis.com/projectSettings/clarify?view=CONSUMER_VIEW  
+ 
+[debug] [2019-08-02T18:36:09.063Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:09.064Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/clarify/locations/us-central1/functions  
+
+[debug] [2019-08-02T18:36:09.500Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:09.502Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/clarify/locations/-/functions  
+ 
+[debug] [2019-08-02T18:36:09.956Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:09.957Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:10.256Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:12.260Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:12.569Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:14.572Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:14.900Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:16.902Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:17.222Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:19.225Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:19.567Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:21.568Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:21.877Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:23.880Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:24.189Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:26.191Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:26.305Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:28.308Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:28.597Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:30.598Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:30.719Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:32.721Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:33.034Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:35.034Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:35.326Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:37.328Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:37.625Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:39.627Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:39.912Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:41.916Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:42.210Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:44.213Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:44.325Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-02T18:36:46.328Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/Y2xhcmlmeS91cy1jZW50cmFsMS9hcHAvekNDMjJaeUdCOVk  
+ 
+[debug] [2019-08-02T18:36:46.422Z] <<< HTTP RESPONSE 200

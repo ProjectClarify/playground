@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
-//import '@firebase/firestore';
+import '@firebase/firestore';
 
 import { store } from '../store.js';
 
@@ -34,7 +34,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
-/*
+
 let db = firebase.firestore!();
 db.settings({
   cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
@@ -51,12 +51,11 @@ db.enablePersistence()
           // ...
       }
   });
-*/
+
 
 firebase.auth!().onAuthStateChanged(function(user) {
   console.log(user);
 
-  /*
   if(user) {
 
     let usersFirestoreDocument = db.collection("users").doc(user.uid);
@@ -66,7 +65,6 @@ firebase.auth!().onAuthStateChanged(function(user) {
         store.dispatch(setUserData(snapshot.data()));
       });
     }
-    */
 
   store.dispatch(setUser(user));
 

@@ -10,7 +10,7 @@
     "start": "gulp serve",
     "build": "tsc && polymer build --auto-base-path --verbose && gulp prpl-server",
     "build:static": "tsc && polymer build --verbose",
-    "build:firebase": "polymer build --auto-base-path --verbose && gulp firebase",
+    "build:firebase": "NODE_OPTIONS=--max_old_space_size=4096 polymer build --auto-base-path --verbose && gulp firebase",
     "serve": "prpl-server --root server/build",
     "serve:static": "polymer serve --port 5000 build/es5-bundled",
     "test": "npm run test:unit && npm run test:integration",

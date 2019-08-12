@@ -20,6 +20,8 @@ import { mouseIcon } from './my-icons.js';
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles.js';
 
+import { navigator, exerciseBrowser, exerciseDocumentation, interactive, habitDataviz } from './ui-images.js';
+
 @customElement('view-article-interface-design')
 export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) {
 
@@ -35,9 +37,12 @@ export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) 
           color: var(--app-primary-color);
         }
 
-        .ui-figure {
+        .article-large-width-image > svg {
           box-shadow: 0px 1.5px 4px rgba(0, 0, 0, .4);
           margin: 10px;
+          flex-shrink: 0;
+          width: 80%;
+          height: auto;
         }
 
       `
@@ -68,7 +73,7 @@ export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) 
 
         <div class="article-large-width-image-container">
             <div class="article-large-width-image">
-                <img class="ui-figure" src="/images/navigator.svg"></img>
+                ${navigator}
             </div>
         </div>
 
@@ -84,7 +89,7 @@ export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) 
 
         <div class="article-large-width-image-container">
             <div class="article-large-width-image">
-                <img class="ui-figure" src="/images/exercise-browser.svg"></img>
+                ${exerciseBrowser}
             </div>
         </div>
 
@@ -102,7 +107,7 @@ export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) 
 
         <div class="article-large-width-image-container">
             <div class="article-large-width-image">
-                <img class="ui-figure" src="/images/exercise-documentation.svg"></img>
+                ${exerciseDocumentation}
             </div>
         </div>
 
@@ -118,7 +123,7 @@ export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) 
 
         <div class="article-large-width-image-container">
             <div class="article-large-width-image">
-                <img class="ui-figure" src="/images/deep-work-session.svg"></img>
+                ${interactive}
             </div>
         </div>
 
@@ -134,7 +139,7 @@ export class ViewArticleInterfaceDesign extends connect(store)(PageViewElement) 
 
         <div class="article-large-width-image-container">
             <div class="article-large-width-image">
-                <img class="ui-figure" src="/images/habit-dataviz.svg"></img>
+                ${habitDataviz}
             </div>
         </div>
 

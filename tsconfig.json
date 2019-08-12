@@ -12,7 +12,7 @@
     "experimentalDecorators": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts", "src/components/ui-images.js"
   ],
   "exclude": [],
 }

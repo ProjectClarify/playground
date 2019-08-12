@@ -10,11 +10,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 import firebase from '@firebase/app';
 import '@firebase/auth';
+//import '@firebase/firestore';
 
 import { store } from '../store.js';
 
-import { setUser } from '../actions/user.js';
-import { navigate } from '../actions/app.js';
+import { setUser, setUserData, setUserFirestoreDocument } from '../actions/user.js';
 
 import user from '../reducers/user.js';
 
@@ -24,7 +24,7 @@ store.addReducers({
 
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyB4SSgNQLHsU6ZOssO9bxWh3yOE1EGctPQ",
+  apiKey: "AIzaSyAU4BL4cX5zV-C5mQgjJY5Fv2NC0KFYM_Y",
   authDomain: "clarify-32fcf.firebaseapp.com",
   databaseURL: "https://clarify-32fcf.firebaseio.com",
   projectId: "clarify",
@@ -34,9 +34,42 @@ var config = {
 };
 firebase.initializeApp(config);
 
-firebase.auth().onAuthStateChanged(function(user) {
+/*
+let db = firebase.firestore!();
+db.settings({
+  cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+});
+db.enablePersistence()
+  .catch(function(err) {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+      }
+  });
+*/
+
+firebase.auth!().onAuthStateChanged(function(user) {
   console.log(user);
+
+  /*
+  if(user) {
+
+    let usersFirestoreDocument = db.collection("users").doc(user.uid);
+    store.dispatch(setUserFirestoreDocument(usersFirestoreDocument));
+
+    usersFirestoreDocument.onSnapshot(function (snapshot: Object){
+        store.dispatch(setUserData(snapshot.data()));
+      });
+    }
+    */
+
   store.dispatch(setUser(user));
+
 });
 
 export { firebase };

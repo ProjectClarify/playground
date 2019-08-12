@@ -26,6 +26,8 @@ store.addReducers({
 // These are the elements needed by this element.
 import './counter-element.js';
 
+import './exercise-card.js'
+
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles.js';
 

@@ -38,6 +38,8 @@ import '/node_modules/@polymer/paper-button/paper-button.js';
 
 import { navToggleIcon } from './my-icons.js';
 
+import './feedback-radar.js'
+
 @customElement('view-interactive')
 export class ViewInteractive extends connect(store)(PageViewElement) {
 
@@ -113,7 +115,6 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
           left: 0px;
           padding: none;
           z-index: -999;
-          padding: 100px;
         }
 
         .main-content {
@@ -262,20 +263,27 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
             width: 100%;
             text-align: center;
             margin-top: 100px;
-            padding: 20px;
         }
 
         .session-step-center-middle {
             width: 100%;
             text-align: center;
-            padding: 20px;
+        }
+
+        .session-step-center-bottom-container {
+          width: 100%;
+          height: 150px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center; 
         }
 
         .session-step-center-bottom {
-            width: 100%;
             text-align: center;
-            padding: 20px;
-            margin-bottom: 100px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .session-step-pre-title {
@@ -293,6 +301,7 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
             font-size: 18px;
             font-weight: 100;
             padding: 20px;
+            height: 90px;
         }
 
         paper-slider {
@@ -348,7 +357,6 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
         }
 
         #congrats-inner > * > div {
-          padding: 40px;
         }
 
         .session-timer-container {
@@ -377,51 +385,43 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
           display: flex;
           flex-direction: row;
           justify-content: center;
+          width: 100%;
         }
 
-        .feedback-card {
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            width: 800px;
-            height: 400px;
+        feedback-radar {
+          width: 400px;
+          height: 400px;
         }
 
-        .feedback-legend {
-          position: relative;
-          width: 100px;
-          top: 10px;
-          left: 10px;
-        }
-
-        .feedback-legend-icon-current, .feedback-legend-icon-target {
-          height: 14.8px;
+        .feedback-radar-wrapper {
+          width: 100%;
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           justify-content: center;
         }
 
-        .feedback-legend-icon-current > svg > circle {
-          fill: #f1c232ff;
-        }
+        /* Wide layout: when the viewport width is bigger than 460px, layout
+        changes to a wide layout */
+        @media (max-width: 1048px) {
 
-        .feedback-legend-icon-target > svg > circle {
-          fill: var(--app-primary-color);
-        }
+          .session-step-center-middle-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
 
-        .feedback-legend {
-        }
+          feedback-radar {
+            width: 80vw;
+            height: 80vw;
+          }
 
-        .feedback-legend-item {
-          display: flex;
-          flex-direction: row;
-        }
+          .session-step-description {
+            font-size: 14px;
+            font-weight: 100;
+            padding: 20px;
+            height: 80px;
+          }
 
-        .feedback-legend-item-text {
-          margin-left: 10px;
-          color: black;
-          font-size: 10px;
-          font-weight: 100;
         }
 
       `
@@ -455,11 +455,13 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
 
                 </div>
 
+              <div class="session-step-center-bottom-container">
                 <div class="session-step-center-bottom">
 
-                <paper-button class="inverted-primary" raised @click="${this._nextStep}">Continue</paper-button>
+                  <paper-button class="inverted-primary" raised @click="${this._nextStep}">Continue</paper-button>
 
                 </div>
+              </div>
 
             </div>
 
@@ -521,11 +523,7 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
             ${this.renderSessionTimer()}
 
             <div class="session-step-description">
-            ${this._sessionInProgress ? html`
-                Your project session is in progress. Click below to pause.
-            ` : html`
-                Click below to begin or resume.
-            `}
+              Show documentation in new tab.
             </div>
 
         </div>
@@ -540,18 +538,6 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
     `
   }
 
-  renderSessionRightMiddle() {
-    return html`
-      <div class="feedback-card">
-        <div class="feedback-legend">
-          <div class="feedback-legend-item"><div class="feedback-legend-icon-current">${this.renderSmallCircle()}</div><div class="feedback-legend-item-text">Current</div></div>
-          <div class="feedback-legend-item"><div class="feedback-legend-icon-target">${this.renderSmallCircle()}</div><div class="feedback-legend-item-text">Goal</div></div>
-        </div>
-        <svg id="feedback-viz"></svg>
-      </div>
-    `
-  }
-
   protected renderSession() {
       return html`
       
@@ -561,19 +547,27 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
 
                 <div class="session-step-center-top"></div>
 
-               <div class="session-step-center-middle-container">
-                ${this.renderSessionLeftMiddle()}
+                <div class="session-step-center-middle-container">
+                
+                  ${this.renderSessionLeftMiddle()}
 
-              <div class="special-spacer" style="width: 20px"></div>
+                  <div class="special-spacer" style="width: 20px"></div>
 
-                ${this.renderSessionRightMiddle()}    
+                  <div class="feedback-radar-wrapper">
+                    <feedback-radar></feedback-radar>
+                  </div>    
+
                </div>
 
-                <div class="session-step-center-bottom">
+              <div class="session-step-center-bottom-container">
 
-                  ${this.renderSessionButtons()}
+                 <div class="session-step-center-bottom">
 
-                </div>
+                 ${this.renderSessionButtons()}
+
+                 </div>
+
+               </div>
             
             </div>
 
@@ -611,11 +605,13 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
 
                 </div>
 
+              <div class="session-step-center-bottom-container">
                 <div class="session-step-center-bottom">
                 
                 <paper-button class="inverted-primary" raised @click="${this._nextStep}">Continue</paper-button>
 
                 </div>
+              </div>
 
             </div>
 
@@ -641,11 +637,13 @@ export class ViewInteractive extends connect(store)(PageViewElement) {
                 
                 </div>
 
+              <div class="session-step-center-bottom-container">
                 <div class="session-step-center-bottom">
         
                     <paper-button class="inverted-primary" raised @click="${this._exitSession}">Return Home ></paper-button>
 
                 </div>
+              </div>
 
             </div>
 

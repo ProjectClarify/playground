@@ -407,16 +407,11 @@ export class MyApp extends connect(store)(LitElement) {
           <div main-title>${this.appTitle}</div>
           ${this._user ? 
             html`
-            ${this._dashboardActive ?
-            html`
-              <button class="secondary-light-toolbar-button" title="Data View" @click="${this._navDataView}" inverted="${!this._toolbarLight}">Data View</button>
-            `: html`
-              ${this._toolbarLight ? html`
+            ${this._toolbarLight ? html`
               <button class="secondary-light-toolbar-button" title="Dashboard" @click="${this._navDashView}" inverted="${!this._toolbarLight}">Dashboard</button>     
               `: html`
               <button class="secondary-light-toolbar-button" title="Dashboard" @click="${this._navDashView}" inverted="${!this._toolbarLight}">Exit session</button>     
-              `}       
-            `}
+              `}
             <div class="account-dropdown-toggle" style="background-image: url('${this._user.photoURL}')" alt="account" title="account"  @click="${this._toggleAccountDropdown}" noink></div>
             <!--<button class="logout-btn" title="Logout" @click="${this._logoutButtonClicked}">Sign out</button>-->
             ` : html`
@@ -444,9 +439,11 @@ export class MyApp extends connect(store)(LitElement) {
           <div class="drawer-section-divider">Articles</div>
           <a ?selected="${this._page === 'project-clarify'}" href="/project-clarify">Project Clarify</a>
           <a ?selected="${this._page === 'models-and-infra'}" href="/models-and-infra">Technologies</a>
+          <a ?selected="${this._page === 'interface-design'}" href="/interface-design">Interface Design</a>
 
-          <div class="drawer-section-divider">Developer</div>
+          <div class="drawer-section-divider">Developers</div>
           <a ?selected="${this._page === 'hack'}" href="/hack">Developer events</a>
+          <a ?selected="${this._page === 'residency-program'}" href="/residency-program">Residency program</a>
 
         </nav>
       </app-drawer>
@@ -454,26 +451,18 @@ export class MyApp extends connect(store)(LitElement) {
       <main role="main" class="main-content">
 
         <view-article-project-clarify class="page" ?active="${this._page === 'project-clarify'}"></view-article-project-clarify>
-
         <view-article-models-and-infra class="page" ?active="${this._page === 'models-and-infra'}"></view-article-models-and-infra>
-
         <view-dashboard class="page" ?active="${this._page === 'dashboard'}"></view-dashboard>
-
         <view-login class="page" ?active="${this._page === 'login'}"></view-login>
-
         <view-privacy-policy class="page" ?active="${this._page === 'privacy-policy'}"></view-privacy-policy>
-
         <view-terms-of-service class="page" ?active="${this._page === 'terms-of-service'}"></view-terms-of-service>
-
         <view-article-hackathons class="page" ?active="${this._page === 'hack'}"></view-article-hackathons>
-
         <my-view404 class="page" ?active="${this._page === 'thats-a-404'}"></my-view404>
-
         <view-data class="page" ?active="${this._page === 'data'}"></view-data>
-
         <view-documentation class="page" ?active="${this._page === 'documentation'}"></view-documentation>
-
         <view-interactive class="page" ?active="${this._page === 'interactive-base'}"></view-interactive>
+        <view-article-interface-design class="page" ?active="${this._page === 'interface-design'}"></view-article-interface-design>
+        <view-article-residency-program class="page" ?active="${this._page === 'residency-program'}"></view-article-residency-program>
 
       </main>
 

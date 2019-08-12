@@ -430,4 +430,50 @@ export const SharedStyles = css`
     color: var(--app-primary-color);
   }
 
+    .top-spacer {
+    height: 87.4px;
+    }
+
+    .nav {
+    position: fixed;
+    left: 0px;
+    top: 125px;
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    }
+
+    .right-nav {
+    right: 0px;
+    }
+
+    .nav-item {
+    font-size: 12px;
+    padding-left: 15px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    }
+
+    .nav-item[active="true"] {
+    font-weight: 600;
+    border-left: 3px solid var(--app-primary-color);
+    color: var(--app-primary-color);
+    }
+
+    .nav-title {
+    font-size: 12px;
+    font-weight: 600;
+    padding-bottom: 14px;
+    }
+
+    .nav-items {
+
+    }
+    
+    @media (max-width: 1048px) {
+    .nav {
+        display: none;
+    }
+    }
+
 `;

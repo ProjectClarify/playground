@@ -124,9 +124,14 @@ const loadPage: ActionCreator<ThunkResult> = (page: string) => (dispatch) => {
         dispatch(updateDashboardActive(false));
       });
       break;
-    case 'documentation':
-      import('../components/view-documentation.js').then((_module) => {
-        // This is repetitive but not familiar enough with js to do more succinctly
+    case 'interface-design':
+      import('../components/view-article-interface-design.js').then((_module) => {
+        dispatch(updateLoadingAnimationState(false));
+        dispatch(updateDashboardActive(false));
+      });
+      break;
+    case 'residency-program':
+      import('../components/view-article-residency-program.js').then((_module) => {
         dispatch(updateLoadingAnimationState(false));
         dispatch(updateDashboardActive(false));
       });

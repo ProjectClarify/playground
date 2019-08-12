@@ -8,9 +8,9 @@
   "repository": "Polymer/pwa-starter-kit",
   "scripts": {
     "start": "gulp serve",
-    "build": "tsc && polymer build --auto-base-path && gulp prpl-server",
-    "build:static": "tsc && polymer build",
-    "build:firebase": "polymer build --auto-base-path && gulp firebase",
+    "build": "tsc && polymer build --auto-base-path --verbose && gulp prpl-server",
+    "build:static": "tsc && polymer build --verbose",
+    "build:firebase": "polymer build --auto-base-path --verbose && gulp firebase",
     "serve": "prpl-server --root server/build",
     "serve:static": "polymer serve --port 5000 build/es5-bundled",
     "test": "npm run test:unit && npm run test:integration",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.4.9",
+    "@firebase/firestore": "^1.4.8",
     "@polymer/app-layout": "^3.0.0",
     "@polymer/iron-collapse": "^3.0.1",
     "@polymer/iron-scroll-threshold": "^3.0.1",

@@ -75,4 +75,5 @@ export class ShopProducts extends connect(store)(LitElement) {
   stateChanged(state: RootState) {
     this._products = state.shop!.products;
   }
+
 }

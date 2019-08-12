@@ -63,8 +63,8 @@ export class ViewLogin extends connect(store)(PageViewElement) {
   protected renderLoggedIn() {
     return html`
       <section class="article-hero">
-        <p class="article-hero-heading">Login successful!</p>
-        <p class="article-hero-subheading">Select a page from the menu to the left.</p>
+        <p class="article-hero-heading">Welcome to the Demo!</p>
+        <p class="article-hero-subheading">It's a work in progress but will be updated periodically. See "Dashboard" above to check it out or our <a href="/interface-design">interface design</a> article to see where we're headed.</p>
       </section>
     `;
   }

@@ -139,6 +139,8 @@ export class ViewArticleProjectClarify extends PageViewElement {
 
       </section>
 
+
+
       <div class="article-bottom-spacer"></div>
 
       <div class="made-with-love"><p>Made with love in California.</p></div>
@@ -246,12 +248,16 @@ export class ViewArticleProjectClarify extends PageViewElement {
     // What will hold what we determine to be the currently active section
     let sectionId = "";
 
-    Object.keys(scrollThresholds).forEach(
-        function(key) {
-          let value = scrollThresholds[key];
-          if(currentPosition > value - 300) {if(key !== ""){sectionId = key;};};
+    let thresholdFun = function(key: any) {
+      let value = scrollThresholds[key];
+      if(currentPosition > (value - 300)) {
+        if(key !== ""){
+          sectionId = key;
         };
-    );
+      };
+    };
+
+    Object.keys(scrollThresholds).forEach(thresholdFun);
 
     if (sectionId != this.activeSection) {
       // Trigger an update to the scrollspy menu

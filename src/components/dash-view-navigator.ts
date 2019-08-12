@@ -1,3 +1,4 @@
+
 /**
 @license
 Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
@@ -21,8 +22,10 @@ import { ButtonSharedStyles } from './button-shared-styles.js';
 
 import "/node_modules/@polymer/iron-collapse/iron-collapse.js";
 
-@customElement('view-documentation')
-export class ViewDocumentation extends connect(store)(PageViewElement) {
+import './exercise-card.js';
+
+@customElement('dash-view-navigator')
+export class DashViewNavigator extends connect(store)(PageViewElement) {
 
   @property({type: Object})
   _user = '';
@@ -38,9 +41,10 @@ export class ViewDocumentation extends connect(store)(PageViewElement) {
   protected render() {
     return html`
 
-        documentation view
+        <div style="height: 400px; width: 400px; background-color: red"></div>
 
     `;
   }
 
 }
+
